@@ -1,0 +1,24 @@
+[
+  {
+    "font": "dokchamp.ttf",
+    "dest": "./src/base/fonts",
+    "target": "dokchamp",
+    "text": "1234567890.,",
+    "targets": [
+      "woff",
+      "eot",
+      "svg"
+    ]
+  },
+  {
+    "font": "ltthj.ttf",
+    "dest": "./src/base/fonts",
+    "target": "ltthj",
+    "text": "一二三四第季度年奖励方案上活动本",
+    "targets": [
+      "woff",
+      "eot",
+      "svg"
+    ]
+  }
+]

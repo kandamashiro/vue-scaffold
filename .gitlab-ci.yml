@@ -1,0 +1,82 @@
+before_script:
+   - which node && node --version
+   - which npm && npm --version
+
+stages:
+  - test
+  - build
+  - deploy
+cache:
+  key: "forehead_third_ref"
+  untracked: true
+  paths:
+  - node_modules/
+
+prepare:
+  tags:
+    - build
+  stage: build
+  only:
+    - build/ref
+  script:
+    - echo "prepare env"
+    - npm i --cache
+
+test:
+  tags:
+    - test
+  stage: test
+  only:
+    - deploy
+    - master
+  script:
+    - echo "prepare to test"
+    - npm run unit
+
+build-release:
+  tags:
+    - build
+  stage: build
+  only:
+    - develop
+  script:
+    - echo "prepare to build"
+    - npm run release
+
+build-release-production:
+  tags:
+    - build
+  stage: build
+  only:
+    - master
+  script:
+    - echo "prepare to build"
+    - npm run release:production
+
+# 部署测试服务器
+deploy-test:
+  tags:
+    - deploy
+  stage: deploy
+  only:
+    - develop
+  script:
+    - echo "prepare to move release to test"
+    - sshpass -p "Global@123" scp -r www/forehead_wx_v3.zip root@10.0.5.201:/data/html
+    - echo "prepare to decompress"
+    - sshpass -p "Global@123" ssh root@10.0.5.201 "unzip -o /data/html/forehead_wx_v3.zip -d /data/html/www/forehead"
+
+## codequality:
+#   image: docker:stable
+#   variables:
+#     DOCKER_DRIVER: overlay2
+#   allow_failure: true
+#   script:
+#     - export SP_VERSION=$(echo "$CI_SERVER_VERSION" | sed 's/^\([0-9]*\)\.\([0-9]*\).*/\1-\2-stable/')
+#     - docker run
+#         --env SOURCE_CODE="$PWD"
+#         --volume "$PWD":/code
+#         --volume /var/run/docker.sock:/var/run/docker.sock
+#         "registry.gitlab.com/gitlab-org/security-products/codequality:$SP_VERSION" /code
+#   artifacts:
+#     paths: [codeclimate.json]

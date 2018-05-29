@@ -1,0 +1,7 @@
+/www
+/src/vendor
+/test/unit/coverage/
+
+**/gulpfile.js
+
+**/webpack*.js

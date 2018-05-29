@@ -1,0 +1,7 @@
+[defaults]
+project=wx-pc
+url=http://sentry.5x5x.com/
+org=sentry
+
+[auth]
+token=d7d1f505291d4f658af062ac6a7edc5aec68a9cbd4fd45b9861ecb7e3e1f3844
